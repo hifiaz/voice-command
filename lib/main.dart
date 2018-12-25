@@ -1,6 +1,7 @@
 import 'package:examplevoice/overview.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_recognition/speech_recognition.dart';
+import 'package:permission/permission.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,11 +40,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String getPermission = '';
   SpeechRecognition _speech;
 
   bool _speechRecognitionAvailable = false;
   bool _isListening = false;
-
 
   String _currentLocale = 'en_US';
 
@@ -51,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     super.initState();
     activateSpeechRecognizer();
+    requestPermission();
   }
 
   void activateSpeechRecognizer() {
@@ -130,4 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void onRecognitionStarted() => setState(() => _isListening = true);
 
   void onRecognitionComplete() => setState(() => _isListening = false);
+  requestPermission() async {
+    final res =
+        await Permission.requestSinglePermission(PermissionName.Microphone);
+    print(res);
+  }
 }
